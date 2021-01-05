@@ -71,7 +71,7 @@
 - block:
     - name: Update Homebrew after installation is completed
       command: "{{ homebrew_brew_bin_path }}/brew update --force"
-      when: not homebrew_binary_stat.stat.exists
+      when: not homebrew_binary.stat.exists
 
     - name: Find Homebrew cache path
       command: "{{ hombrew_brew_bin_path }}/brew --cache"
@@ -90,12 +90,12 @@
     - name: Check for Brewfile
       stat:
         path: "{{ homebrew_brewfile_dir }}/Brewfile"
-      register: homebrew_file_stat
+      register: homebrew_brewfile
       check_mode: false
 
     - name: Install applications from Brewfile
       include_tasks: brewfile.yml
-      when: homebrew_brewfile_stat.stat.exists and homebrew_use_brewfile
+      when: homebrew_brewfile.stat.exists and homebrew_use_brewfile
 
   become: "{{ homebrew_user != ansible_user_id | bool }}"
   become_user: "{{ homebrew_user }}"
