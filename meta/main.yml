@@ -1,0 +1,37 @@
+galaxy_info:
+  role_name: terraform
+  author: Andrew Gonzalez
+  description: "Terraform for Linux"
+  license: MIT
+  min_ansible_version: 2.9
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Amazon
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+    - name: MacOSX
+      versions:
+        - all
+    - name: Alpine
+      versions:
+        - all
+  galaxy_tags:
+    - development
+    - system
+    - cloud
+    - aws
+    - ami
+    - gcp
+    - gcp
+    - droplet
+    - docker
+    - build
+    - infrastructure
+    - centos
+
+dependencies: []
