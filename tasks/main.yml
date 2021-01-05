@@ -46,7 +46,7 @@
 - name: Verify Homebrew is in the correct directory
   stat:
     path: "{{ homebrew_brew_bin_path }}/brew"
-  register: homebrew_binary_stat
+  register: homebrew_binary
   check_mode: false
 
 - name: Symlink brew to its binary path
