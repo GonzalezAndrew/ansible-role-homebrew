@@ -29,18 +29,18 @@
 - name: Adjust Homebrew binary directory permissions
   file:
     path: "{{ homebrew_brew_bin_path }}"
+    state: directory
     owner: "{{ homebrew_user }}"
     group: "{{ homebrew_group }}"
-    state: directory
     mode: 0775
   become: true
 
 - name: Adjust Homebrew subdirectories permissions
   file:
     path: "{{ homebrew_install_path }}"
+    state: directory
     owner: "{{ homebrew_user }}"
     group: "{{ homebrew_group }}"
-    state: directory
   become: true
 
 - name: Verify Homebrew is in the correct directory
@@ -49,20 +49,20 @@
   register: homebrew_binary_stat
   check_mode: false
 
-- name: Syslink brew to homebrew binary path
+- name: Symlink brew to its binary path
   file:
     src: "{{ homebrew_install_path }}/bin/brew"
     dest: "{{ homebrew_brew_bin_path }}/brew"
-    stat: link
-  when: homebrew_binary_stat.stat.exists
+    state: link
+  when: not homebrew_binary.stat.exists
   become: true
 
 - name: Ensure all Homebrew folders are in place
   file:
     path: "{{ homebrew_prefix }}/{{ item }}"
+    state: directory
     owner: "{{ homebrew_user }}"
     group: "{{ homebrew_group }}"
-    state: directory
   become: true
   with_items:
     - "{{ homebrew_folders_additional }}"
