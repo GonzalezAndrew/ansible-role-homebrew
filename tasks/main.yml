@@ -95,7 +95,7 @@
 
     - name: Install applications from Brewfile
       include_tasks: brewfile.yml
-      when: hombrew_brewfile_stat.stat.exists and homebrew_use_brewfile
+      when: homebrew_brewfile_stat.stat.exists and homebrew_use_brewfile
 
-  become: "{{ hombrew_user != ansible_user_id | bool }}"
-  become_user: "{{ hombrew_user }}"
+  become: "{{ homebrew_user != ansible_user_id | bool }}"
+  become_user: "{{ homebrew_user }}"
