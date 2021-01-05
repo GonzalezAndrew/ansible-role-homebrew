@@ -1,5 +1,5 @@
 ---
-hombrew_repo: https://github.com/Homebrew/brew
+homebrew_repo: https://github.com/Homebrew/brew
 
 homebrew_prefix: "{{ (ansible_os_family == 'Darwin') | ternary('/usr/local', '/home/linuxbrew/.linuxbrew') }}"
 homebrew_install_path: "{{ homebrew_prefix }}/Homebrew"

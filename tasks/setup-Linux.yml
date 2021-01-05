@@ -1,5 +1,5 @@
 ---
-- name: Create Homebrew directory
+- name: Create Homebrew root directory
   file:
     path: "{{ homebrew_prefix }}"
     owner: root
@@ -8,12 +8,13 @@
     mode: 0775
   become: yes
 
-- name: Ensure Homebrew directory has the correct permissions
+- name: Ensure Homebrew directory exists
   file:
-    path: "{{ homebrew_prefix }}"
+    path: "{{ homebrew_install_path }}"
     owner: "{{ homebrew_user }}"
     group: "{{ homebrew_group }}"
     state: directory
+    mode: 0775
   become: yes
 
 - name: Install Homebrew dependencies
