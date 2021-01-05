@@ -4,7 +4,7 @@
     name: "{{ item }}"
     state: absent
   with_items:
-    - "{{ homebrew_cask_uninstall_apps }}"
+    - "{{ homebrew_cask_uninstalled_apps }}"
 
 - name: Install cask applications
   homebrew_cask:
@@ -13,6 +13,6 @@
     accept_external_apps: "{{ homebrew_cask_accept_external_apps }}"
     state: present
   with_items:
-    - "{{ hombrew_cask_apps }}"
+    - "{{ homebrew_cask_apps }}"
   notify:
     - Clear hombrew cache
