@@ -1,37 +1,23 @@
 galaxy_info:
-  role_name: terraform
+  role_name: homebrew
   author: Andrew Gonzalez
-  description: "Terraform for Linux"
+  description: "Homebrew for macOS and Linux"
   license: MIT
   min_ansible_version: 2.9
   platforms:
-    - name: Ubuntu
-      versions:
-        - all
-    - name: Amazon
-      versions:
-        - all
-    - name: Debian
-      versions:
-        - all
     - name: MacOSX
       versions:
         - all
-    - name: Alpine
+        - any
+    - name: GenericLinux
       versions:
         - all
   galaxy_tags:
     - development
     - system
-    - cloud
-    - aws
-    - ami
-    - gcp
-    - gcp
-    - droplet
-    - docker
-    - build
-    - infrastructure
-    - centos
-
-dependencies: []
+    - packaging
+    - brew
+    - homebrew
+    - cask
+    - package
+    - manager

@@ -1,2 +1,16 @@
 ---
-# vars file for ansible role 
+homebrew_folders_base:
+  - bin
+  - Caskroom
+  - Cellar
+  - etc
+  - Frameworks
+  - Homebrew
+  - include
+  - lib
+  - opt
+  - sbin
+  - share
+  - share/zsh
+  - share/zsh/site-functions
+  - var

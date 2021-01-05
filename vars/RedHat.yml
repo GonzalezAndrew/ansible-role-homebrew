@@ -1,0 +1,6 @@
+---
+dependencies:
+  - curl
+  - file
+  - git
+  - gcc

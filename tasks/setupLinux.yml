@@ -1,0 +1,44 @@
+---
+- name: Include Variables
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Ensure Homebrew directory exists
+  stat:
+    path: "{{ homebrew_prefix | dirname }}"
+  register: homebrew_dir_stat
+  check_mode: no
+
+- name: Create Homebrew directory if it does not exists
+  file:
+    path: "{{ homebrew_prefix }}"
+    owner: root
+    group: root
+    state: directory
+  become: yes
+  when: not hombrew_dir_stat.stat.exists
+
+- name: Ensure Homebrew directory has the correct permissions
+  file:
+    path: "{{ homebrew_prefix }}"
+    owner: "{{ homebrew_user }}"
+    group: "{{ homebrew_group }}"
+    state: directory
+  become: yes
+
+- name: Install Homebrew dependencies
+  package:
+    name: "{{ dependencies }}"
+    state: present
+
+- name: Install yum groupinstall dependencies
+  yum:
+    name: "@Development tools"
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Install Fedora dependencies
+  yum:
+    name: libxcrypt-compat
+    state: present
+  when: ansible_distribution == "Fedora"
+

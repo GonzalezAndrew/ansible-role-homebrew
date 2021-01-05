@@ -1,0 +1,18 @@
+---
+- name: Uninstall cask applications
+  homebrew_cask:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ homebrew_cask_uninstall_apps }}"
+
+- name: Install cask applications
+  homebrew_cask:
+    name: "{{ item | default(item) }}"
+    install_options: "{{ item.install_options | default('appdir=' + homebrew_cask_appdir) }}"
+    accept_external_apps: "{{ homebrew_cask_accept_external_apps }}"
+    state: present
+  with_items:
+    - "{{ hombrew_cask_apps }}"
+  notify:
+    - Clear hombrew cache

@@ -1,5 +1,17 @@
 ---
 - hosts: localhost
-  remote_user: root
+  vars:
+    homebrew_clear_cache: true
+    hombrew_installed_packages:
+      - ssh-copy-id
+      - nginx-full
+    homebrew_cask_apps:
+      - google-chrome
+    homebrew_taps:
+      - homebrew/core
+      - name: denji/nginx
+        url: 'https://github.com/denji/homebrew-nginx.git'
+
   roles:
-    - ansible-role-template
+    - elliotweiser.osx-command-line-tools
+    - ansible-role-homebrew
