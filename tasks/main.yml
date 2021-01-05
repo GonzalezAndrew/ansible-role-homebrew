@@ -66,7 +66,7 @@
   become: true
   with_items:
     - "{{ homebrew_folders_additional }}"
-    - "{{ hombrew_folders_base }}"
+    - "{{ homebrew_folders_base }}"
 
 - block:
     - name: Update Homebrew after installation is completed

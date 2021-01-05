@@ -1,47 +1,115 @@
-# Ansible Role Template
-This repository will be used as a template for Ansible roles.
+# Ansible Role Homebrew
+![CI](https://github.com/GonzalezAndrew/ansible-role-homebrew/workflows/CI/badge.svg)
 
-Steps:
-- [ ] Clone
-- [ ] Add your [Ansible Galaxy](https://galaxy.ansible.com/) api token as a secret for [GitHub actions](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets)
-- [ ] Configure Ansible Role
-- [ ] Add [workflow badge](https://docs.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow#adding-a-workflow-status-badge-to-your-repository) to README file
+Ansible role that will install Homebrew on MacOS or Linux.
 
-Role Name
-=========
-
-A brief description of the role goes here.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None.
+
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+
+Available variables are listed below along with their default values. (see [defaults/main.yml](defaults/main.yml))
+
+The GitHub repository for Homebrew core.
+
+```
+homebrew_repo: https://github.com/Homebrew/brew
+```
+
+The path where Homebrew will be installed. 
+```
+homebrew_prefix: "{{ (ansible_os_family == 'Darwin') | ternary('/usr/local', '/home/linuxbrew/.linuxbrew') }}"
+homebrew_install_path: "{{ homebrew_prefix }}/Homebrew"
+homebrew_brew_bin_path: "{{ homebrew_prefix }}/bin"
+```
+
+A list of packages you would like to install via `brew install`.   
+```
+homebrew_installed_packages:
+  - jq
+  - { name: vim, install_options: "with-luajit,override-system-vi" }
+```
+
+A list of packages you wish to uninstall.
+```
+homebrew_uninstalled_packages: []
+```
+
+Whether you would like to upgrade all packages that are installed.
+```
+homebrew_upgrade_all_packages: false
+```
+
+Homebrew taps you would like to ensure are configured.
+```
+homebrew_taps:
+  - homebrew/core
+  - { name: my_company/internal_tap, url: 'https://example.com/path/to/tap.git' }
+```
+
+Applications you would like to install with `cask`. 
+```
+homebrew_cask_apps:
+  - google-chrome
+  - { name: slack, install_options:"debug,appdir=/Applications" }
+```
+
+A list of `cask` applications you would like uninstalled.
+```
+homebrew_cask_uninstalled_apps: []
+```
+
+The directory where your cask applications should be installed to.
+```
+homebrew_cask_appdir: /Applications
+homebrew_cask_accept_external_apps: false
+```
+
+Whether to install applications & packages via a Brewfile. If you wish to use a Brewfile, ensure you have `homebrew/bundle` tap configured (This can be done with `homebrew_taps`).
+```
+homebrew_use_brewfile: false
+homebrew_brewfile_dir: '~'
+```
+
+Remove the cache when an application or package is installed via Homebrew.
+```
+homebrew_clear_cache: false
+```
+
+A list of additional folders inside the Homebre directory.
+```
+homebrew_folders_additional: []
+```
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
+
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
+    - hosts: localhost
+      vars:
+        homebrew_installed_packages:
+          - zsh
       roles:
-         - { role: username.rolename, x: 42 }
+         - gonzalezandrew.homebrew
 
 License
 -------
 
-BSD
+MIT
+
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+This role was created in 2020 by Andrew Gonzalez.
