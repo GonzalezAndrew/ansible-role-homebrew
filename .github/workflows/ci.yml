@@ -105,7 +105,7 @@ jobs:
           python-version: '3.x'
 
       - name: Install test dependencies.
-        run: sudo pip3 install ansible molecule[docker] docker
+        run: pip3 install ansible molecule[docker] docker
 
       - name: Run Molecule tests.
         run: molecule test
