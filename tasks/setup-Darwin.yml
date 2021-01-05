@@ -1,17 +1,11 @@
 ---
-- name: Ensure Homebrew directory exists 
-  stat:
-    path: "{{ homebrew_prefix | dirname }}"
-  register: homebrew_dir_stat
-  check_mode: no
-
 - name: Create Homebrew directory if it does not exists (macOS >= 10.13)
   file:
     path: "{{ homebrew_prefix }}"
     owner: root
     state: directory
   become: yes
-  when: not hombrew_dir_stat.stat.exists and "ansible_distribution_version is version('10.13', '>=')"
+  when: "ansible_distribution_version is version('10.13', '>=')"
 
 - name: Create Homebrew directory if it does not exists (macOS < 10.13)
   file:
@@ -20,7 +14,7 @@
     group: admin
     state: directory
   become: yes
-  when: not hombrew_dir_stat.stat.exists and "ansible_distribution_version is version('10.13', '<')"
+  when: "ansible_distribution_version is version('10.13', '<')"
 
 - name: Ensure Homebrew directory has the correct permissions
   file:

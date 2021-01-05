@@ -1,15 +1,19 @@
 ---
+- name: Include Variables
+  include_vars: "{{ ansible_os_family }}.yml"
+  when: ansible_os_family != "Darwin"
+
 - name: Determine Homebrew ownership variables
   set_fact:
     homebrew_user: '{{ homebrew_user | default(ansible_user_id) }}'
     homebrew_group: '{{ homebrew_group | default(ansible_user_gid) }}'
 
 - name: Install on Darwin
-  include_tasks: setupDarwin.yml
+  include_tasks: setup-Darwin.yml
   when: ansible_os_family == "Darwin"
 
 - name: Install on Linux
-  include_tasks: setupLinux.yml
+  include_tasks: setup-Linux.yml
   when: ansible_os_family != "Darwin"
 
 - name: Clone Homebrew
@@ -22,7 +26,7 @@
   become: true
   become_user: "{{ homebrew_user }}"
 
-- name: Adjust Homebrew binary directory permissions 
+- name: Adjust Homebrew binary directory permissions
   file:
     path: "{{ homebrew_brew_bin_path }}"
     owner: "{{ homebrew_user }}"
@@ -65,34 +69,33 @@
     - "{{ hombrew_folders_base }}"
 
 - block:
-  - name: Update Homebrew after installation is completed
-    command: "{{ homebrew_brew_bin_path }}/brew update --force"
-    when: not homebrew_binary_stat.stat.exists
+    - name: Update Homebrew after installation is completed
+      command: "{{ homebrew_brew_bin_path }}/brew update --force"
+      when: not homebrew_binary_stat.stat.exists
 
-  - name: Find Homebrew cache path 
-    command: "{{ hombrew_brew_bin_path }}/brew --cache"
-    register: homebrew_cache_path
-    change_when: false
-    check_mode: false
+    - name: Find Homebrew cache path
+      command: "{{ hombrew_brew_bin_path }}/brew --cache"
+      register: homebrew_cache_path
+      check_mode: false
 
-  - name: tap external Homebrew repositories
-    include_tasks: tap.yml
-  
-  - name: Install additional Cask applications 
-    include_tasks: cask.yml
-  
-  - name: Install additional brew's
-    include_tasks: brew.yml
-  
-  - name: Check for Brewfile
-    stat:
-      path: "{{ homebrew_brewfile_dir }}/Brewfile"
-    register: homebrew_file_stat
-    check_mode: false
+    - name: tap external Homebrew repositories
+      include_tasks: tap.yml
 
-  - name: Install applications from Brewfile 
-    include_task: brewfile.yml
-    when: hombrew_brewfile_stat.stat.exists and homebrew_use_brewfile
+    - name: Install additional Cask applications
+      include_tasks: cask.yml
+
+    - name: Install additional brew's
+      include_tasks: brew.yml
+
+    - name: Check for Brewfile
+      stat:
+        path: "{{ homebrew_brewfile_dir }}/Brewfile"
+      register: homebrew_file_stat
+      check_mode: false
+
+    - name: Install applications from Brewfile
+      include_tasks: brewfile.yml
+      when: hombrew_brewfile_stat.stat.exists and homebrew_use_brewfile
 
   become: "{{ hombrew_user != ansible_user_id | bool }}"
   become_user: "{{ hombrew_user }}"

@@ -1,5 +1,5 @@
 #!/bin/bash
-# 
+#
 # Uninstalls Homebrew using the official uninstall script.
 # Source: https://github.com/geerlingguy/ansible-role-homebrew/blob/master/tests/uninstall-homebrew.sh
 

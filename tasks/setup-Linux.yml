@@ -1,21 +1,12 @@
 ---
-- name: Include Variables
-  include_vars: "{{ ansible_os_family }}.yml"
-
-- name: Ensure Homebrew directory exists
-  stat:
-    path: "{{ homebrew_prefix | dirname }}"
-  register: homebrew_dir_stat
-  check_mode: no
-
-- name: Create Homebrew directory if it does not exists
+- name: Create Homebrew directory
   file:
     path: "{{ homebrew_prefix }}"
     owner: root
     group: root
     state: directory
+    mode: 0775
   become: yes
-  when: not hombrew_dir_stat.stat.exists
 
 - name: Ensure Homebrew directory has the correct permissions
   file:
@@ -41,4 +32,3 @@
     name: libxcrypt-compat
     state: present
   when: ansible_distribution == "Fedora"
-
