@@ -99,3 +99,5 @@
 
   become: "{{ homebrew_user != ansible_user_id | bool }}"
   become_user: "{{ homebrew_user }}"
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ homebrew_brew_bin_path }}"
